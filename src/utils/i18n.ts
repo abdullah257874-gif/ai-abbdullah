@@ -1,0 +1,211 @@
+import type { UILanguage, WritingToolMeta } from '../types';
+
+const RTL_SCRIPT_REGEX = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
+
+export function containsRtlScript(text: string): boolean {
+  if (!text) return false;
+  const sample = text.slice(0, 600);
+  let rtlChars = 0;
+  let latinChars = 0;
+  for (const ch of sample) {
+    if (RTL_SCRIPT_REGEX.test(ch)) rtlChars += 1;
+    else if (/[A-Za-z]/.test(ch)) latinChars += 1;
+  }
+  return rtlChars > 0 && rtlChars >= latinChars * 0.35;
+}
+
+export const SUPPORTED_GENERATION_LANGUAGES = [
+  'English',
+  'Urdu (اردو)',
+  'Roman Urdu',
+  'Hindi (हिन्दी)',
+  'Arabic (العربية)',
+  'Persian (فارسی)',
+  'Turkish (Türkçe)',
+  'Spanish (Español)',
+  'French (Français)',
+  'German (Deutsch)',
+  'Chinese (中文)',
+];
+
+export const TRANSLATION_LANGUAGES = [
+  { code: 'Auto', label: 'Auto-Detect Language' },
+  { code: 'English', label: 'English' },
+  { code: 'Urdu', label: 'Urdu (اردو)' },
+  { code: 'Hindi', label: 'Hindi (हिन्दी)' },
+  { code: 'Arabic', label: 'Arabic (العربية)' },
+  { code: 'Persian', label: 'Persian (فارسی)' },
+  { code: 'Punjabi', label: 'Punjabi (پنجابی)' },
+  { code: 'Pashto', label: 'Pashto (پښتو)' },
+  { code: 'Turkish', label: 'Turkish (Türkçe)' },
+  { code: 'Spanish', label: 'Spanish (Español)' },
+  { code: 'French', label: 'French (Français)' },
+  { code: 'German', label: 'German (Deutsch)' },
+  { code: 'Chinese', label: 'Chinese (Simplified)' },
+];
+
+export const WRITING_TOOLS: WritingToolMeta[] = [
+  {
+    id: 'article_writer',
+    titleEn: 'Article Writer',
+    titleUr: 'مضمون نگار',
+    descEn: 'Long-form structured articles with headings and analysis.',
+    descUr: 'عنوانات اور تفصیلی تجزیے کے ساتھ مکمل مضامین لکھیں۔',
+    placeholderEn: 'Enter your article topic, target audience, and key points...',
+    placeholderUr: 'اپنے مضمون کا عنوان اور اہم نکات درج کریں...',
+  },
+  {
+    id: 'story_writer',
+    titleEn: 'Story Writer',
+    titleUr: 'کہانی نویس',
+    descEn: 'Original creative stories with rich characters and plot.',
+    descUr: 'دلچسپ کرداروں اور پلاٹ کے ساتھ تخلیقی کہانیاں لکھیں۔',
+    placeholderEn: 'Describe your story premise, characters, setting, or moral...',
+    placeholderUr: 'کہانی کا خیال، کردار اور ماحول بیان کریں...',
+  },
+  {
+    id: 'youtube_script',
+    titleEn: 'YouTube Script Generator',
+    titleUr: 'یوٹیوب اسکرپٹ جنریٹر',
+    descEn: 'High-retention video scripts with hooks and visual cues.',
+    descUr: 'بہترین آغاز اور ویژول اشاروں کے ساتھ ویڈیو اسکرپٹ تیار کریں۔',
+    placeholderEn: 'What is your YouTube video about and how long should it be?',
+    placeholderUr: 'آپ کی یوٹیوب ویڈیو کس موضوع پر ہے؟',
+  },
+  {
+    id: 'youtube_title',
+    titleEn: 'YouTube Title Generator',
+    titleUr: 'یوٹیوب ٹائٹل جنریٹر',
+    descEn: 'Click-worthy video title variations grouped by angle.',
+    descUr: 'ویوز بڑھانے والے دلکش یوٹیوب ٹائٹلز حاصل کریں۔',
+    placeholderEn: 'Describe your video topic and target viewer...',
+    placeholderUr: 'اپنی ویڈیو کا موضوع درج کریں...',
+  },
+  {
+    id: 'social_caption',
+    titleEn: 'Social Media Captions',
+    titleUr: 'سوشل میڈیا کیپشنز',
+    descEn: 'Tailored captions and hashtags for Instagram, LinkedIn, and X.',
+    descUr: 'انسٹاگرام، لنکڈ ان اور فیس بک کے لیے بہترین کیپشنز۔',
+    placeholderEn: 'Describe your post, announcement, or photo context...',
+    placeholderUr: 'اپنی پوسٹ یا تصویر کی تفصیل لکھیں...',
+  },
+  {
+    id: 'email_writer',
+    titleEn: 'Email Writer',
+    titleUr: 'ای میل رائٹر',
+    descEn: 'Clear professional, academic, or client outreach emails.',
+    descUr: 'پیشہ ورانہ اور دفتری ای میلز فوری تیار کریں۔',
+    placeholderEn: 'Who is the recipient and what is the goal of this email?',
+    placeholderUr: 'ای میل کس کو بھیجنی ہے اور مقصد کیا ہے؟',
+  },
+  {
+    id: 'business_description',
+    titleEn: 'Business Description',
+    titleUr: 'کاروباری تعارف',
+    descEn: 'Elevator pitches, store bios, and website company profiles.',
+    descUr: 'اپنے کاروبار یا برانڈ کا پیشہ ورانہ تعارف لکھیں۔',
+    placeholderEn: 'Share your business name, products/services, and audience...',
+    placeholderUr: 'اپنے کاروبار کا نام اور خدمات درج کریں...',
+  },
+  {
+    id: 'blog_writer',
+    titleEn: 'Blog Writer',
+    titleUr: 'بلاگ رائٹر',
+    descEn: 'Reader-friendly SEO blog posts with actionable takeaways.',
+    descUr: 'ایس ای او کے مطابق معلوماتی بلاگ پوسٹس لکھیں۔',
+    placeholderEn: 'Enter your blog topic, target keywords, and angle...',
+    placeholderUr: 'بلاگ کا موضوع اور مطلوبہ الفاظ لکھیں...',
+  },
+  {
+    id: 'grammar_corrector',
+    titleEn: 'Grammar Corrector',
+    titleUr: 'گرامر کی اصلاح',
+    descEn: 'Fix grammar, spelling, clarity, and phrasing with explanations.',
+    descUr: 'تحریر کی گرامر، املا اور روانی درست کریں۔',
+    placeholderEn: 'Paste the paragraph or draft you want proofread and improved...',
+    placeholderUr: 'اصلاح کے لیے اپنی تحریر یہاں پیسٹ کریں...',
+  },
+  {
+    id: 'creative_ideas',
+    titleEn: 'Creative Idea Generator',
+    titleUr: 'تخلیقی آئیڈیاز',
+    descEn: 'Actionable project, startup, content, or campaign concepts.',
+    descUr: 'پروجیکٹس، کاروبار یا مواد کے لیے نئے تخلیقی آئیڈیاز۔',
+    placeholderEn: 'What field, problem, or audience do you need fresh ideas for?',
+    placeholderUr: 'کس شعبے یا مسئلے کے لیے نئے آئیڈیاز درکار ہیں؟',
+  },
+];
+
+export const UI_STRINGS: Record<UILanguage, Record<string, string>> = {
+  en: {
+    appName: 'AI Smart Assistant',
+    dashboard: 'Home',
+    chat: 'AI Chat',
+    writing: 'Writing Tools',
+    image: 'Image Vision',
+    translate: 'Translator',
+    study: 'Study Lab',
+    code: 'Code Studio',
+    prompt: 'Prompt Craft',
+    settings: 'Settings',
+    profile: 'Profile',
+    admin: 'Admin',
+    startNewChat: 'Start New Chat',
+    welcomeTitle: 'What would you like to accomplish today?',
+    welcomeSubtitle:
+      'Ask in English, Urdu, or Roman Urdu — draft articles, analyze images, translate text, study step-by-step, or write clean code.',
+    quickChatPlaceholder: 'Ask anything in English, Urdu, or Roman Urdu...',
+    send: 'Send',
+    recentConversations: 'Recent Conversations',
+    noConversationsYet: 'No saved conversations yet. Start a chat to begin.',
+    guestNotice: 'Guest Mode — Sign in to save private conversation history across sessions.',
+    signIn: 'Sign In',
+    register: 'Create Account',
+    signOut: 'Sign Out',
+    generate: 'Generate',
+    regenerate: 'Regenerate',
+    copy: 'Copy',
+    copied: 'Copied',
+    clear: 'Clear',
+    retry: 'Retry',
+    darkMode: 'Dark Mode',
+    lightMode: 'Light Mode',
+    languageLabel: 'Interface Language',
+  },
+  ur: {
+    appName: 'اے آئی اسمارٹ اسسٹنٹ',
+    dashboard: 'ہوم ڈیش بورڈ',
+    chat: 'اے آئی چیٹ',
+    writing: 'تحریری ٹولز',
+    image: 'تصویری تجزیہ',
+    translate: 'مترجم',
+    study: 'تعلیمی معاون',
+    code: 'کوڈ اسسٹنٹ',
+    prompt: 'پرامپٹ جنریٹر',
+    settings: 'ترتیبات',
+    profile: 'پروفائل',
+    admin: 'ایڈمن پینل',
+    startNewChat: 'نئی گفتگو شروع کریں',
+    welcomeTitle: 'آج آپ کس کام میں مدد چاہتے ہیں؟',
+    welcomeSubtitle:
+      'انگریزی، اردو یا رومن اردو میں سوال پوچھیں — مضامین لکھیں، تصاویر سمجھیں، ترجمہ کریں، پڑھائی یا کوڈنگ میں مدد لیں۔',
+    quickChatPlaceholder: 'انگریزی، اردو یا رومن اردو میں کچھ بھی پوچھیں...',
+    send: 'بھیجیں',
+    recentConversations: 'حالیہ گفتگو',
+    noConversationsYet: 'ابھی کوئی محفوظ گفتگو موجود نہیں۔ نئی چیٹ شروع کریں۔',
+    guestNotice: 'گیسٹ موڈ — اپنی نجی گفتگو محفوظ رکھنے کے لیے اکاؤنٹ میں سائن ان کریں۔',
+    signIn: 'سائن ان',
+    register: 'نیا اکاؤنٹ بنائیں',
+    signOut: 'سائن آؤٹ',
+    generate: 'تیار کریں',
+    regenerate: 'دوبارہ تیار کریں',
+    copy: 'کاپی کریں',
+    copied: 'کاپی ہو گیا',
+    clear: 'صاف کریں',
+    retry: 'دوبارہ کوشش کریں',
+    darkMode: 'ڈارک موڈ',
+    lightMode: 'لائٹ موڈ',
+    languageLabel: 'ایپ کی زبان',
+  },
+};

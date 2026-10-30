@@ -1,0 +1,6 @@
+{
+  "name": "AI Smart Assistant",
+  "description": "A bilingual English and Urdu AI Smart Assistant with chat, writing tools, image understanding, translation, study, and code tools.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
